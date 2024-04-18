@@ -1,75 +1,46 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: rabbitmq
+  name: order-service
 spec:
-  serviceName: rabbitmq
   replicas: 1
   selector:
     matchLabels:
-      app: rabbitmq
+      app: order-service
   template:
     metadata:
       labels:
-        app: rabbitmq
+        app: order-service
     spec:
       nodeSelector:
         "kubernetes.io/os": linux
       containers:
-      - name: rabbitmq
-        image: mcr.microsoft.com/mirror/docker/library/rabbitmq:3.10-management-alpine
+      - name: order-service
+        image: palopatregistry.azurecr.io.azurecr.io/aks-store-demo/order-service:latest
         ports:
-        - containerPort: 5672
-          name: rabbitmq-amqp
-        - containerPort: 15672
-          name: rabbitmq-http
+        - containerPort: 3000
         env:
-        - name: RABBITMQ_DEFAULT_USER
-          value: "username"
-        - name: RABBITMQ_DEFAULT_PASS
-          value: "password"
+        - name: ORDER_QUEUE_HOSTNAME
+          value: "sb-store-demo-17366.servicebus.windows.net" # Example: sb-store-demo-123456.servicebus.windows.net
+        - name: ORDER_QUEUE_PORT
+          value: "5671"
+        - name: ORDER_QUEUE_TRANSPORT
+          value: "tls"
+        - name: ORDER_QUEUE_USERNAME
+          value: "sender"
+        - name: ORDER_QUEUE_PASSWORD
+          value: "bNif3YAca2ssLjAwtLSqBigCzYhzVQEyo+ASbABa0QU="
+        - name: ORDER_QUEUE_NAME
+          value: "orders"
+        - name: FASTIFY_ADDRESS
+          value: "0.0.0.0"
         resources:
           requests:
-            cpu: 10m
-            memory: 128Mi
+            cpu: 1m
+            memory: 50Mi
           limits:
-            cpu: 250m
-            memory: 256Mi
-        volumeMounts:
-        - name: rabbitmq-enabled-plugins
-          mountPath: /etc/rabbitmq/enabled_plugins
-          subPath: enabled_plugins
-      volumes:
-      - name: rabbitmq-enabled-plugins
-        configMap:
-          name: rabbitmq-enabled-plugins
-          items:
-          - key: rabbitmq_enabled_plugins
-            path: enabled_plugins
----
-apiVersion: v1
-data:
-  rabbitmq_enabled_plugins: |
-    [rabbitmq_management,rabbitmq_prometheus,rabbitmq_amqp1_0].
-kind: ConfigMap
-metadata:
-  name: rabbitmq-enabled-plugins            
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: rabbitmq
-spec:
-  selector:
-    app: rabbitmq
-  ports:
-    - name: rabbitmq-amqp
-      port: 5672
-      targetPort: 5672
-    - name: rabbitmq-http
-      port: 15672
-      targetPort: 15672
-  type: ClusterIP
+            cpu: 75m
+            memory: 128Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
