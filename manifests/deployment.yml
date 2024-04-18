@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: palopataksstoredemo 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: palopataksstoredemo
+  template:
+    metadata:
+      labels:
+        app: palopataksstoredemo 
+    spec:
+      containers:
+        - name: palopataksstoredemo 
+          image: palopatregistry.azurecr.io/palopataksstoredemo
+          ports:
+          - containerPort: 5001
