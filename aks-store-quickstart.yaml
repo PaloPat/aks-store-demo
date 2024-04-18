@@ -1,6 +1,3 @@
-apiVersion: apps/v1
-<<<<<<< HEAD
-=======
 kind: Deployment
 metadata:
   name: order-service
@@ -45,62 +42,6 @@ spec:
             memory: 128Mi
 ---
 apiVersion: apps/v1
->>>>>>> 07bfd98828ca5f77eaf543bfbbb66c55ffc8caed
-kind: Deployment
-metadata:
-  name: order-service
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: order-service
-  template:
-    metadata:
-      labels:
-        app: order-service
-    spec:
-      nodeSelector:
-        "kubernetes.io/os": linux
-      containers:
-      - name: order-service
-        image: palopatregistry.azurecr.io/aks-store-demo/order-service:latest
-        ports:
-        - containerPort: 3000
-        env:
-        - name: ORDER_QUEUE_HOSTNAME
-          value: "sb-store-demo-17366.servicebus.windows.net" # Example: sb-store-demo-123456.servicebus.windows.net
-        - name: ORDER_QUEUE_PORT
-          value: "5671"
-        - name: ORDER_QUEUE_TRANSPORT
-          value: "tls"
-        - name: ORDER_QUEUE_USERNAME
-          value: "sender"
-        - name: ORDER_QUEUE_PASSWORD
-          value: "bNif3YAca2ssLjAwtLSqBigCzYhzVQEyo+ASbABa0QU="
-        - name: ORDER_QUEUE_NAME
-          value: "orders"
-        - name: FASTIFY_ADDRESS
-          value: "0.0.0.0"
-        resources:
-          requests:
-            cpu: 1m
-            memory: 50Mi
-          limits:
-            cpu: 75m
-            memory: 128Mi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: order-service
-spec:
-  type: ClusterIP
-  ports:
-  - name: http
-    port: 3000
-    targetPort: 3000
-  selector:
-    app: order-service
 ---
 apiVersion: apps/v1
 kind: Deployment
