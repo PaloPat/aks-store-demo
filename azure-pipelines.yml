@@ -31,3 +31,10 @@ jobs:
     displayName: Publish Test Results
     condition: always()
 
+  - task: KubernetesManifest@1
+    inputs:
+      action: 'deploy'
+      connectionType: 'kubernetesServiceConnection'
+      kubernetesServiceConnection: 'PaloPatCluster-default'
+      namespace: 'default'
+      manifests: 'aks-store-quickstart.yaml'
