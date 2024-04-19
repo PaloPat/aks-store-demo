@@ -35,17 +35,17 @@ jobs:
     inputs:
       dockerRegistryServiceConnection: 'PaloPatRegistry'
       repository: 'aks-store-demo/order-service'
-      Dockerfile: './src/order-service/Dockerfile'
+      Dockerfile: './src/order-service/'
   - task: ContainerBuild@0
     inputs:
       dockerRegistryServiceConnection: 'PaloPatRegistry'
       repository: 'aks-store-demo/product-service'
-      Dockerfile: './src/product-service/Dockerfile'
+      Dockerfile: './src/product-service/'
   - task: ContainerBuild@0
     inputs:
       dockerRegistryServiceConnection: 'PaloPatRegistry'
       repository: 'aks-store-demo/store-front'
-      Dockerfile: './src/store-front/Dockerfile'
+      Dockerfile: './src/store-front/'
   - task: KubernetesManifest@1
     inputs:
       action: 'deploy'
