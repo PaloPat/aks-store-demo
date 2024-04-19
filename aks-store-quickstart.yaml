@@ -16,7 +16,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
       - name: order-service
-        image: palopatregistry.azurecr.io.azurecr.io/aks-store-demo/order-service:latest
+        image: palopatregistry.azurecr.io/aks-store-demo/order-service:latest
         ports:
         - containerPort: 3000
         env:
