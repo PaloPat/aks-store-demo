@@ -30,12 +30,13 @@ jobs:
       testRunTitle: PrismaCloudTests
     displayName: Publish Test Results
     condition: always()
-
-  - task: ContainerBuild@0
+  - task: Docker@2
     inputs:
-      dockerRegistryServiceConnection: 'PaloPatRegistry'
+      containerRegistry: 'PaloPatRegistry'
       repository: 'aks-store-demo/order-service'
-      Dockerfile: './src/order-service/'
+      command: 'buildAndPush'
+      Dockerfile: './src/order-service/Dockerfile'
+
   - task: ContainerBuild@0
     inputs:
       dockerRegistryServiceConnection: 'PaloPatRegistry'
