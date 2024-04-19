@@ -31,6 +31,21 @@ jobs:
     displayName: Publish Test Results
     condition: always()
 
+  - task: ContainerBuild@0
+    inputs:
+      dockerRegistryServiceConnection: 'PaloPatRegistry'
+      repository: 'aks-store-demo/order-service'
+      Dockerfile: '/src/order-service/Dockerfile'
+  - task: ContainerBuild@0
+    inputs:
+      dockerRegistryServiceConnection: 'PaloPatRegistry'
+      repository: 'aks-store-demo/product-service'
+      Dockerfile: '/src/product-service/Dockerfile'
+  - task: ContainerBuild@0
+    inputs:
+      dockerRegistryServiceConnection: 'PaloPatRegistry'
+      repository: 'aks-store-demo/store-front'
+      Dockerfile: '/src/store-front/Dockerfile'
   - task: KubernetesManifest@1
     inputs:
       action: 'deploy'
