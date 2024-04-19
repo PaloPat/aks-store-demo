@@ -30,3 +30,15 @@ jobs:
       testRunTitle: PrismaCloudTests
     displayName: Publish Test Results
     condition: always()
+
+
+- job: Deploy_App
+  displayName: Deploy The App
+  steps:
+  - task: AzureCLI@2
+    inputs:
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        kubectl apply -f aks-store-quickstart.yaml
+    displayName: 'Deploy Application'
