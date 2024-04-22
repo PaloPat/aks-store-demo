@@ -57,3 +57,6 @@ jobs:
       kubernetesServiceConnection: 'PaloPatCluster-default'
       namespace: 'default'
       manifests: 'aks-store-quickstart.yaml'
+
+
+      
