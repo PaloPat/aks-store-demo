@@ -15,41 +15,6 @@ jobs:
   displayName: Prisma Cloud Job
   steps:
 
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: 3.8
-    displayName: 'Use Python 3.8'
-  - script: pip install checkov
-    displayName: Install Checkov
-  - script: checkov -d . --use-enforcement-rules --bc-api-key dd516dc8-59b4-412a-92ab-7766dbb033b0::BXtATEBSqCGMOfJGhzz9Va5ZLPA= --repo-id PaloPat/aks-store-demo --branch main -o cli -o junitxml --output-file-path console,CheckovReport.xml
-    workingDirectory: $(System.DefaultWorkingDirectory)
-    displayName: Run Checkov
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFormat: 'JUnit'
-      testResultsFiles: '**/CheckovReport.xml'
-      testRunTitle: PrismaCloudTests
-    displayName: Publish Test Results
-    condition: always()
-
-  - task: Docker@2
-    inputs:
-      containerRegistry: 'PaloPatRegistry'
-      repository: 'aks-store-demo/order-service'
-      command: 'buildAndPush'
-      Dockerfile: './src/order-service/Dockerfile'
-  - task: Docker@2
-    inputs:
-      containerRegistry: 'PaloPatRegistry'
-      repository: 'aks-store-demo/product-service'
-      command: 'buildAndPush'
-      Dockerfile: './src/product-service/Dockerfile'
-  - task: Docker@2
-    inputs:
-      containerRegistry: 'PaloPatRegistry'
-      repository: 'aks-store-demo/store-front'
-      command: 'buildAndPush'
-      Dockerfile: './src/store-front/Dockerfile'
   - task: KubernetesManifest@1
     inputs:
       action: 'deploy'
